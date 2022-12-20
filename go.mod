@@ -7,14 +7,18 @@ require (
 	github.com/go-ini/ini v1.67.0
 	github.com/hpcloud/tail v1.0.0
 	github.com/sirupsen/logrus v1.9.0
+	go.etcd.io/etcd v2.3.8+incompatible
 )
 
 require (
+	github.com/coreos/etcd v2.3.8+incompatible // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.3.0 // indirect
 	github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21 // indirect
 	github.com/eapache/queue v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
+	github.com/gogo/protobuf v1.3.2 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
