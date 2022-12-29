@@ -3,22 +3,25 @@ package etcd
 
 import (
 	"code.dream.com/logaent/common"
+	"code.dream.com/logaent/tailfile"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"go.etcd.io/etcd/clientv3"
 	"time"
+
+	"go.etcd.io/etcd/clientv3"
 )
 
 // etcd相关操作
-type collectEntry struct {
+/*type collectEntry struct {
 	Path  string `json:"path"`
 	Topic string `json:"topic"`
 }
-
+*/
 var (
 	client *clientv3.Client
+	//confChan chan []common.CollectEntry
 )
 
 func Init(address []string) (err error) {
@@ -55,4 +58,31 @@ func GetConf(key string) (collectEntryList []common.CollectEntry, err error) {
 		return
 	}
 	return
+}
+
+// 监控etcd中日志收集项配置变化的函数
+func WatchConf(key string) {
+	for {
+		watchCh := client.Watch(context.Background(), key)
+		for wresp := range watchCh {
+			logrus.Info("get new conf from etcd!")
+			for _, evt := range wresp.Events {
+				fmt.Printf("type:%s key:%s value:%s\n", evt.Type, evt.Kv.Key, evt.Kv.Value)
+				var newConf []common.CollectEntry
+				if evt.Type == clientv3.EventTypeDelete {
+					// 如果是删除
+					logrus.Warnf("FBI waring: etcd delete the key!")
+					tailfile.SendNewConf(newConf) //没有任何接收就是阻塞的
+					continue
+				}
+				err := json.Unmarshal(evt.Kv.Value, &newConf)
+				if err != nil {
+					logrus.Errorf("json unmarshal new conf failed,err:%v", err)
+					continue
+				}
+				// 告诉tailfile这个模块应该应用新的配置了！
+				tailfile.SendNewConf(newConf) //没有任何接收就是阻塞的
+			}
+		}
+	}
 }

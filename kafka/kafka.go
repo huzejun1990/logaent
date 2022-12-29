@@ -10,7 +10,7 @@ import (
 var (
 	client  sarama.SyncProducer
 	msgChan chan *sarama.ProducerMessage
-	//log *logrus.Logger
+	log     *logrus.Logger
 )
 
 /*type Message struct {
