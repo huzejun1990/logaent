@@ -98,7 +98,3 @@ func (t *tailTask) Init() (err error) {
 	t.tObj, err = tail.TailFile(t.path, cfg)
 	return
 }
-
-/*func SendNewConf(newConf []common.CollectEntry) {
-	confChan<-newConf
-}*/

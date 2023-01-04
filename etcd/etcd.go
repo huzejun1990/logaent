@@ -13,12 +13,6 @@ import (
 	"go.etcd.io/etcd/clientv3"
 )
 
-// etcd相关操作
-/*type collectEntry struct {
-	Path  string `json:"path"`
-	Topic string `json:"topic"`
-}
-*/
 var (
 	client *clientv3.Client
 	//confChan chan []common.CollectEntry
